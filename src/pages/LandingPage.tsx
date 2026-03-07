@@ -402,22 +402,122 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Team Section */}
+      <section className="py-24 relative border-t border-border">
+        <div className="container mx-auto px-6 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="font-heading text-4xl md:text-5xl font-bold text-foreground mb-4">
+              Meet the <span className="text-gradient">Team</span>
+            </h2>
+            <p className="text-muted-foreground text-lg max-w-xl mx-auto">
+              The talented minds behind SUPREME TECH and ANANTA AI
+            </p>
+          </motion.div>
+          <div className="max-w-4xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="glass-panel rounded-2xl p-8 mb-6"
+            >
+              <div className="flex items-center gap-4 mb-6">
+                <div className="h-16 w-16 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-lg font-bold text-primary-foreground">
+                  SV
+                </div>
+                <div>
+                  <h3 className="font-heading text-2xl font-bold text-foreground">Sabavath Vishesh</h3>
+                  <p className="text-primary font-semibold">Founder & Leader</p>
+                </div>
+              </div>
+              <p className="text-muted-foreground">Owner of SUPREME TECH, driving innovation and vision for the ANANTA AI platform.</p>
+            </motion.div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.1 }}
+                className="glass-panel rounded-2xl p-6"
+              >
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="h-12 w-12 rounded-full bg-gradient-to-br from-secondary to-primary flex items-center justify-center text-sm font-bold text-primary-foreground">
+                    SV
+                  </div>
+                  <div>
+                    <h4 className="font-heading font-semibold text-foreground">Sabavath Venkatesh</h4>
+                    <p className="text-xs text-muted-foreground">Team Member</p>
+                  </div>
+                </div>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2 }}
+                className="glass-panel rounded-2xl p-6"
+              >
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="h-12 w-12 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-sm font-bold text-primary-foreground">
+                    KV
+                  </div>
+                  <div>
+                    <h4 className="font-heading font-semibold text-foreground">Kammari Vishwas Chary</h4>
+                    <p className="text-xs text-muted-foreground">Team Member</p>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Footer */}
       <footer className="border-t border-border py-12 relative">
         <div className="container mx-auto px-6">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="flex items-center gap-3">
-              <img src={anantaLogo} alt="ANANTA AI" className="h-8 w-8 object-contain" />
-              <span className="font-heading font-bold text-gradient text-lg">ANANTA AI</span>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+            {/* About */}
+            <div>
+              <div className="flex items-center gap-3 mb-4">
+                <img src={anantaLogo} alt="ANANTA AI" className="h-8 w-8 object-contain" />
+                <span className="font-heading font-bold text-gradient text-lg">ANANTA AI</span>
+              </div>
+              <p className="text-sm text-muted-foreground">Intelligent guidance for learning, gaming & smart decisions.</p>
             </div>
-            <div className="flex items-center gap-3">
-              <span className="text-sm text-muted-foreground">A product of</span>
-              <div className="flex items-center gap-2 glass-panel rounded-full px-4 py-2">
+
+            {/* Contact */}
+            <div>
+              <h4 className="font-heading font-semibold text-foreground mb-4">Contact</h4>
+              <div className="space-y-2">
+                <p className="text-sm text-muted-foreground">
+                  <span className="font-medium text-foreground">Phone:</span> 6304027276
+                </p>
+                <p className="text-sm text-muted-foreground break-all">
+                  <span className="font-medium text-foreground">Email:</span> supremeexperimental38@gmail.com
+                </p>
+              </div>
+            </div>
+
+            {/* Company */}
+            <div>
+              <h4 className="font-heading font-semibold text-foreground mb-4">SUPREME TECH</h4>
+              <div className="flex items-center gap-2 glass-panel rounded-full px-4 py-2 w-fit mb-3">
                 <img src={supremeTechLogo} alt="Supreme Tech" className="h-6 w-6 object-contain" />
                 <span className="font-heading font-semibold text-foreground text-sm">SUPREME TECH</span>
               </div>
+              <p className="text-sm text-muted-foreground">Founded by Sabavath Vishesh</p>
             </div>
-            <p className="text-sm text-muted-foreground">© 2026 Supreme Tech. All rights reserved.</p>
+          </div>
+
+          <div className="border-t border-border pt-8 flex flex-col md:flex-row items-center justify-between gap-6">
+            <p className="text-sm text-muted-foreground">© 2026 SUPREME TECH. All rights reserved.</p>
+            <p className="text-sm text-muted-foreground">ANANTA AI - A Product of SUPREME TECH</p>
           </div>
         </div>
       </footer>
