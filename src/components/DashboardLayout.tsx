@@ -2,11 +2,12 @@ import { Outlet, Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/lib/auth-context";
 import { Button } from "@/components/ui/button";
 import {
-  Sparkles, LayoutDashboard, MessageSquare, ShoppingCart,
+  LayoutDashboard, MessageSquare, ShoppingCart,
   GraduationCap, Gamepad2, User, Settings, LogOut, Search, Bell, Menu, X
 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import anantaLogo from "@/assets/ananta-logo.png";
 
 const navItems = [
   { to: "/dashboard", icon: LayoutDashboard, label: "Dashboard" },
@@ -37,7 +38,7 @@ export default function DashboardLayout() {
         sidebarOpen ? "w-64" : "w-16"
       )}>
         <div className="flex items-center gap-2 h-16 px-4 border-b border-border">
-          <Sparkles className="h-6 w-6 text-primary shrink-0" />
+          <img src={anantaLogo} alt="ANANTA AI" className="h-8 w-8 object-contain shrink-0" />
           {sidebarOpen && <span className="font-heading text-lg font-bold text-gradient">ANANTA AI</span>}
         </div>
         <nav className="flex-1 py-4 space-y-1 px-2 overflow-y-auto">
@@ -96,7 +97,7 @@ export default function DashboardLayout() {
               <div className="h-8 w-8 rounded-full bg-gradient-primary flex items-center justify-center text-sm font-bold text-primary-foreground">
                 {user.name[0].toUpperCase()}
               </div>
-              {<span className="text-sm font-medium text-foreground hidden md:block">{user.name}</span>}
+              <span className="text-sm font-medium text-foreground hidden md:block">{user.name}</span>
             </div>
           </div>
         </header>
