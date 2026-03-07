@@ -443,17 +443,20 @@ export default function LandingPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.1 }}
-                className="glass-panel rounded-2xl p-6"
+                whileHover={{ y: -5, scale: 1.02 }}
+                className="glass-panel rounded-2xl p-6 hover-glow transition-all duration-500 group relative overflow-hidden"
               >
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="h-12 w-12 rounded-full bg-gradient-to-br from-secondary to-primary flex items-center justify-center text-sm font-bold text-primary-foreground">
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[hsl(263,70%,58%)] to-[hsl(280,80%,65%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="h-14 w-14 rounded-full bg-gradient-to-br from-secondary to-primary flex items-center justify-center text-sm font-bold text-primary-foreground shadow-lg">
                     SV
                   </div>
                   <div>
-                    <h4 className="font-heading font-semibold text-foreground">Sabavath Venkatesh</h4>
-                    <p className="text-xs text-muted-foreground">Team Member</p>
+                    <h4 className="font-heading font-semibold text-foreground text-lg">Sabavath Venkatesh</h4>
+                    <p className="text-sm text-primary font-medium">Hardware Systems Creation & Handling</p>
                   </div>
                 </div>
+                <p className="text-sm text-muted-foreground leading-relaxed">Expert in designing and implementing advanced hardware systems infrastructure.</p>
               </motion.div>
 
               <motion.div
@@ -461,17 +464,20 @@ export default function LandingPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.2 }}
-                className="glass-panel rounded-2xl p-6"
+                whileHover={{ y: -5, scale: 1.02 }}
+                className="glass-panel rounded-2xl p-6 hover-glow transition-all duration-500 group relative overflow-hidden"
               >
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="h-12 w-12 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-sm font-bold text-primary-foreground">
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[hsl(150,80%,45%)] to-[hsl(170,90%,50%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="h-14 w-14 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-sm font-bold text-primary-foreground shadow-lg">
                     KV
                   </div>
                   <div>
-                    <h4 className="font-heading font-semibold text-foreground">Kammari Vishwas Chary</h4>
-                    <p className="text-xs text-muted-foreground">Team Member</p>
+                    <h4 className="font-heading font-semibold text-foreground text-lg">Kammari Vishwas Chary</h4>
+                    <p className="text-sm text-primary font-medium">Hardware Integration & Handling</p>
                   </div>
                 </div>
+                <p className="text-sm text-muted-foreground leading-relaxed">Specialized in seamless hardware integration and system optimization.</p>
               </motion.div>
             </div>
           </div>
