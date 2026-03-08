@@ -6,8 +6,9 @@ import {
   GraduationCap, Gamepad2, User, Settings, LogOut, Search, Bell, Menu, X
 } from "lucide-react";
 import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
-import anantaLogo from "@/assets/ananta-logo.png";
+import anantaLogo from "@/assets/ananta-logo-new.png";
 
 const navItems = [
   { to: "/dashboard", icon: LayoutDashboard, label: "Dashboard" },
@@ -33,31 +34,74 @@ export default function DashboardLayout() {
   return (
     <div className="min-h-screen bg-background flex">
       {/* Sidebar */}
-      <aside className={cn(
-        "fixed inset-y-0 left-0 z-40 flex flex-col border-r border-border bg-sidebar transition-all duration-300",
-        sidebarOpen ? "w-64" : "w-16"
-      )}>
+      <motion.aside
+        initial={false}
+        animate={{ width: sidebarOpen ? 256 : 64 }}
+        transition={{ duration: 0.3, ease: "easeInOut" }}
+        className="fixed inset-y-0 left-0 z-40 flex flex-col border-r border-border bg-sidebar overflow-hidden"
+      >
         <div className="flex items-center gap-2 h-16 px-4 border-b border-border">
-          <img src={anantaLogo} alt="ANANTA AI" className="h-8 w-8 object-contain shrink-0" />
-          {sidebarOpen && <span className="font-heading text-lg font-bold text-gradient">ANANTA AI</span>}
+          <motion.img
+            src={anantaLogo}
+            alt="ANANTA AI"
+            className="h-9 w-9 object-contain shrink-0 drop-shadow-[0_0_10px_hsl(192,100%,50%,0.4)]"
+            animate={{ rotate: [0, 5, -5, 0] }}
+            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+          />
+          <AnimatePresence>
+            {sidebarOpen && (
+              <motion.span
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -10 }}
+                className="font-heading text-lg font-bold text-gradient whitespace-nowrap"
+              >
+                ANANTA AI
+              </motion.span>
+            )}
+          </AnimatePresence>
         </div>
         <nav className="flex-1 py-4 space-y-1 px-2 overflow-y-auto">
-          {navItems.map((item) => {
+          {navItems.map((item, i) => {
             const active = location.pathname === item.to;
             return (
-              <Link
+              <motion.div
                 key={item.to}
-                to={item.to}
-                className={cn(
-                  "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200",
-                  active
-                    ? "bg-primary/10 text-primary border border-primary/20"
-                    : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
-                )}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: i * 0.05 }}
               >
-                <item.icon className="h-5 w-5 shrink-0" />
-                {sidebarOpen && <span>{item.label}</span>}
-              </Link>
+                <Link
+                  to={item.to}
+                  className={cn(
+                    "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-300 group relative overflow-hidden",
+                    active
+                      ? "bg-primary/10 text-primary border border-primary/20 shadow-[0_0_15px_hsl(192,100%,50%,0.1)]"
+                      : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+                  )}
+                >
+                  {active && (
+                    <motion.div
+                      layoutId="activeNav"
+                      className="absolute inset-0 bg-primary/5 rounded-lg"
+                      transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                    />
+                  )}
+                  <item.icon className="h-5 w-5 shrink-0 relative z-10" />
+                  <AnimatePresence>
+                    {sidebarOpen && (
+                      <motion.span
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="relative z-10 whitespace-nowrap"
+                      >
+                        {item.label}
+                      </motion.span>
+                    )}
+                  </AnimatePresence>
+                </Link>
+              </motion.div>
             );
           })}
         </nav>
@@ -67,36 +111,62 @@ export default function DashboardLayout() {
             className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-sidebar-foreground hover:bg-sidebar-accent w-full transition-colors"
           >
             <LogOut className="h-5 w-5 shrink-0" />
-            {sidebarOpen && <span>Log Out</span>}
+            <AnimatePresence>
+              {sidebarOpen && (
+                <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="whitespace-nowrap">
+                  Log Out
+                </motion.span>
+              )}
+            </AnimatePresence>
           </button>
         </div>
-      </aside>
+      </motion.aside>
 
       {/* Main */}
-      <div className={cn("flex-1 transition-all duration-300", sidebarOpen ? "ml-64" : "ml-16")}>
+      <motion.div
+        className="flex-1"
+        animate={{ marginLeft: sidebarOpen ? 256 : 64 }}
+        transition={{ duration: 0.3, ease: "easeInOut" }}
+      >
         {/* Header */}
         <header className="sticky top-0 z-30 h-16 glass-panel border-b flex items-center justify-between px-6">
           <div className="flex items-center gap-4">
-            <button onClick={() => setSidebarOpen(!sidebarOpen)} className="text-muted-foreground hover:text-foreground transition-colors">
+            <motion.button
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+              className="text-muted-foreground hover:text-foreground transition-colors"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+            >
               {sidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-            </button>
+            </motion.button>
             <div className="relative hidden md:block">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <input
                 placeholder="Search..."
-                className="h-9 w-64 rounded-lg bg-muted border border-border pl-10 pr-4 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary"
+                className="h-9 w-64 rounded-lg bg-muted border border-border pl-10 pr-4 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-all duration-300"
               />
             </div>
           </div>
           <div className="flex items-center gap-4">
-            <button className="text-muted-foreground hover:text-foreground transition-colors relative">
+            <motion.button
+              className="text-muted-foreground hover:text-foreground transition-colors relative"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+            >
               <Bell className="h-5 w-5" />
-              <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-primary animate-pulse-glow" />
-            </button>
+              <motion.span
+                className="absolute -top-1 -right-1 h-2.5 w-2.5 rounded-full bg-primary"
+                animate={{ scale: [1, 1.3, 1], opacity: [1, 0.7, 1] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              />
+            </motion.button>
             <div className="flex items-center gap-2">
-              <div className="h-8 w-8 rounded-full bg-gradient-primary flex items-center justify-center text-sm font-bold text-primary-foreground">
+              <motion.div
+                className="h-9 w-9 rounded-full bg-gradient-primary flex items-center justify-center text-sm font-bold text-primary-foreground shadow-lg shadow-primary/20"
+                whileHover={{ scale: 1.05 }}
+              >
                 {user.name[0].toUpperCase()}
-              </div>
+              </motion.div>
               <span className="text-sm font-medium text-foreground hidden md:block">{user.name}</span>
             </div>
           </div>
@@ -105,7 +175,7 @@ export default function DashboardLayout() {
         <main className="p-6">
           <Outlet />
         </main>
-      </div>
+      </motion.div>
     </div>
   );
 }
