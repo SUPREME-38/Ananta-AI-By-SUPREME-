@@ -2,7 +2,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { ShoppingCart, Gamepad2, GraduationCap, ArrowRight, Zap, Shield, Globe, MessageSquare } from "lucide-react";
-import anantaLogo from "@/assets/ananta-logo.png";
+import anantaLogo from "@/assets/ananta-logo-new.png";
 import supremeTechLogo from "@/assets/supreme-tech-logo.png";
 import { useRef, useEffect, useState } from "react";
 
