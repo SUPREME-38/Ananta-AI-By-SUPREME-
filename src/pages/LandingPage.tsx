@@ -14,8 +14,8 @@ const features = [
 ];
 
 const stats = [
-  { icon: Zap, label: "Lightning Fast", value: "< 1s Response" },
-  { icon: Shield, label: "Secure", value: "End-to-end" },
+  { icon: Shield, label: "Trusted Resources", value: "100% Verified" },
+  { icon: Zap, label: "Customer Rated", value: "4.9/5 Stars" },
   { icon: Globe, label: "Always Available", value: "24/7 Online" },
 ];
 
