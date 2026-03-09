@@ -259,16 +259,6 @@ export default function LandingPage() {
           </motion.div>
         </motion.div>
 
-        {/* Scroll indicator */}
-        <motion.div
-          className="absolute bottom-10 left-1/2 -translate-x-1/2"
-          animate={{ y: [0, 10, 0], opacity: [0.5, 1, 0.5] }}
-          transition={{ duration: 2, repeat: Infinity }}
-        >
-          <div className="w-6 h-10 rounded-full border-2 border-muted-foreground/30 flex justify-center pt-2">
-            <div className="w-1 h-2 rounded-full bg-primary" />
-          </div>
-        </motion.div>
       </section>
 
       {/* Stats */}
