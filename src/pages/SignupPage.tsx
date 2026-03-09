@@ -5,19 +5,33 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { motion } from "framer-motion";
+import { Loader2 } from "lucide-react";
 import anantaLogo from "@/assets/ananta-logo-new.png";
 
 export default function SignupPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
   const { signup } = useAuth();
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    signup(name, email, password);
-    navigate("/dashboard");
+    setError(null);
+    if (password.length < 6) {
+      setError("Password must be at least 6 characters");
+      return;
+    }
+    setSubmitting(true);
+    const { error: err } = await signup(name, email, password);
+    setSubmitting(false);
+    if (err) {
+      setError(err);
+    } else {
+      navigate("/dashboard");
+    }
   };
 
   return (
@@ -55,6 +69,15 @@ export default function SignupPage() {
           <p className="text-muted-foreground mt-2">Get started with <span className="text-gradient font-semibold">ANANTA AI</span></p>
         </div>
         <form onSubmit={handleSubmit} className="glass-panel rounded-2xl p-8 space-y-5 border border-border/50">
+          {error && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-destructive/10 border border-destructive/30 rounded-lg p-3 text-sm text-destructive text-center"
+            >
+              {error}
+            </motion.div>
+          )}
           <div className="space-y-2">
             <Label htmlFor="name">Name</Label>
             <Input id="name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name" required className="bg-muted border-border focus:ring-2 focus:ring-primary/50" />
@@ -65,9 +88,11 @@ export default function SignupPage() {
           </div>
           <div className="space-y-2">
             <Label htmlFor="password">Password</Label>
-            <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" required className="bg-muted border-border focus:ring-2 focus:ring-primary/50" />
+            <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" required minLength={6} className="bg-muted border-border focus:ring-2 focus:ring-primary/50" />
           </div>
-          <Button type="submit" variant="hero" className="w-full" size="lg">Create Account</Button>
+          <Button type="submit" variant="hero" className="w-full" size="lg" disabled={submitting}>
+            {submitting ? <><Loader2 className="h-4 w-4 mr-2 animate-spin" /> Creating...</> : "Create Account"}
+          </Button>
           <p className="text-center text-sm text-muted-foreground">
             Already have an account? <Link to="/login" className="text-primary hover:underline font-medium">Log in</Link>
           </p>

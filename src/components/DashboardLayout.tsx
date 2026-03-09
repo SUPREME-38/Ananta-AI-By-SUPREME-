@@ -3,7 +3,7 @@ import { useAuth } from "@/lib/auth-context";
 import { Button } from "@/components/ui/button";
 import {
   LayoutDashboard, MessageSquare, ShoppingCart,
-  GraduationCap, Gamepad2, User, Settings, LogOut, Search, Bell, Menu, X
+  GraduationCap, Gamepad2, User, Settings, LogOut, Search, Bell, Menu, X, Loader2
 } from "lucide-react";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -21,19 +21,28 @@ const navItems = [
 ];
 
 export default function DashboardLayout() {
-  const { user, logout } = useAuth();
+  const { user, profile, loading, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(true);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
 
   if (!user) {
     navigate("/login");
     return null;
   }
 
+  const displayName = profile?.display_name || user.email?.split("@")[0] || "User";
+
   return (
     <div className="min-h-screen bg-background flex">
-      {/* Sidebar */}
       <motion.aside
         initial={false}
         animate={{ width: sidebarOpen ? 256 : 64 }}
@@ -107,7 +116,7 @@ export default function DashboardLayout() {
         </nav>
         <div className="p-3 border-t border-border">
           <button
-            onClick={() => { logout(); navigate("/"); }}
+            onClick={async () => { await logout(); navigate("/"); }}
             className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-sidebar-foreground hover:bg-sidebar-accent w-full transition-colors"
           >
             <LogOut className="h-5 w-5 shrink-0" />
@@ -122,13 +131,11 @@ export default function DashboardLayout() {
         </div>
       </motion.aside>
 
-      {/* Main */}
       <motion.div
         className="flex-1"
         animate={{ marginLeft: sidebarOpen ? 256 : 64 }}
         transition={{ duration: 0.3, ease: "easeInOut" }}
       >
-        {/* Header */}
         <header className="sticky top-0 z-30 h-16 glass-panel border-b flex items-center justify-between px-6">
           <div className="flex items-center gap-4">
             <motion.button
@@ -165,9 +172,9 @@ export default function DashboardLayout() {
                 className="h-9 w-9 rounded-full bg-gradient-primary flex items-center justify-center text-sm font-bold text-primary-foreground shadow-lg shadow-primary/20"
                 whileHover={{ scale: 1.05 }}
               >
-                {user.name[0].toUpperCase()}
+                {displayName[0].toUpperCase()}
               </motion.div>
-              <span className="text-sm font-medium text-foreground hidden md:block">{user.name}</span>
+              <span className="text-sm font-medium text-foreground hidden md:block">{displayName}</span>
             </div>
           </div>
         </header>
