@@ -5,23 +5,32 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { motion } from "framer-motion";
+import { Loader2 } from "lucide-react";
 import anantaLogo from "@/assets/ananta-logo-new.png";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    login(email, password);
-    navigate("/dashboard");
+    setError(null);
+    setSubmitting(true);
+    const { error: err } = await login(email, password);
+    setSubmitting(false);
+    if (err) {
+      setError(err);
+    } else {
+      navigate("/dashboard");
+    }
   };
 
   return (
     <div className="min-h-screen bg-background grid-bg flex items-center justify-center px-4 relative overflow-hidden">
-      {/* Background orbs */}
       <motion.div
         className="absolute w-[500px] h-[500px] rounded-full"
         style={{ background: "radial-gradient(circle, hsl(192 100% 50% / 0.06) 0%, transparent 70%)", top: "10%", left: "20%" }}
@@ -55,15 +64,26 @@ export default function LoginPage() {
           <p className="text-muted-foreground mt-2">Sign in to <span className="text-gradient font-semibold">ANANTA AI</span></p>
         </div>
         <form onSubmit={handleSubmit} className="glass-panel rounded-2xl p-8 space-y-5 border border-border/50">
+          {error && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-destructive/10 border border-destructive/30 rounded-lg p-3 text-sm text-destructive text-center"
+            >
+              {error}
+            </motion.div>
+          )}
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
             <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" required className="bg-muted border-border focus:ring-2 focus:ring-primary/50" />
           </div>
           <div className="space-y-2">
             <Label htmlFor="password">Password</Label>
-            <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" required className="bg-muted border-border focus:ring-2 focus:ring-primary/50" />
+            <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" required minLength={6} className="bg-muted border-border focus:ring-2 focus:ring-primary/50" />
           </div>
-          <Button type="submit" variant="hero" className="w-full" size="lg">Log In</Button>
+          <Button type="submit" variant="hero" className="w-full" size="lg" disabled={submitting}>
+            {submitting ? <><Loader2 className="h-4 w-4 mr-2 animate-spin" /> Logging in...</> : "Log In"}
+          </Button>
           <p className="text-center text-sm text-muted-foreground">
             Don't have an account? <Link to="/signup" className="text-primary hover:underline font-medium">Sign up</Link>
           </p>

@@ -1,17 +1,24 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useAuth } from "@/lib/auth-context";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { User, Mail, Calendar, Shield, Sparkles } from "lucide-react";
+import { User, Mail, Calendar, Shield, Loader2 } from "lucide-react";
 
 export default function ProfilePage() {
-  const { user } = useAuth();
-  const [name, setName] = useState(user?.name || "");
+  const { user, profile } = useAuth();
+  const displayName = profile?.display_name || user?.email?.split("@")[0] || "";
+  const [name, setName] = useState(displayName);
+  const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
 
-  const handleSave = () => {
+  const handleSave = async () => {
+    if (!user) return;
+    setSaving(true);
+    await supabase.from("profiles").update({ display_name: name }).eq("user_id", user.id);
+    setSaving(false);
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
   };
@@ -36,10 +43,10 @@ export default function ProfilePage() {
             className="h-20 w-20 rounded-2xl bg-gradient-primary flex items-center justify-center text-3xl font-bold text-primary-foreground shadow-lg shadow-primary/20"
             whileHover={{ scale: 1.05, rotate: 3 }}
           >
-            {user?.name[0].toUpperCase()}
+            {displayName[0]?.toUpperCase() || "U"}
           </motion.div>
           <div>
-            <h2 className="font-heading text-xl font-semibold text-foreground">{user?.name}</h2>
+            <h2 className="font-heading text-xl font-semibold text-foreground">{displayName}</h2>
             <p className="text-sm text-muted-foreground">{user?.email}</p>
             <div className="flex items-center gap-1.5 mt-1">
               <Shield className="h-3.5 w-3.5 text-primary" />
@@ -55,16 +62,16 @@ export default function ProfilePage() {
           </div>
           <div className="space-y-2">
             <Label className="flex items-center gap-2 text-muted-foreground"><Mail className="h-4 w-4" /> Email</Label>
-            <Input value={user?.email} disabled className="bg-muted border-border opacity-50" />
+            <Input value={user?.email || ""} disabled className="bg-muted border-border opacity-50" />
           </div>
           <div className="space-y-2">
             <Label className="flex items-center gap-2 text-muted-foreground"><Calendar className="h-4 w-4" /> Joined</Label>
-            <Input value={user?.joinedDate ? new Date(user.joinedDate).toLocaleDateString() : ""} disabled className="bg-muted border-border opacity-50" />
+            <Input value={user?.created_at ? new Date(user.created_at).toLocaleDateString() : ""} disabled className="bg-muted border-border opacity-50" />
           </div>
         </div>
 
-        <Button onClick={handleSave} variant="hero" size="lg">
-          {saved ? "✓ Saved Successfully" : "Save Changes"}
+        <Button onClick={handleSave} variant="hero" size="lg" disabled={saving}>
+          {saving ? <><Loader2 className="h-4 w-4 mr-2 animate-spin" /> Saving...</> : saved ? "✓ Saved Successfully" : "Save Changes"}
         </Button>
       </motion.div>
     </div>

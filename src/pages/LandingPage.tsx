@@ -14,8 +14,8 @@ const features = [
 ];
 
 const stats = [
-  { icon: Zap, label: "Lightning Fast", value: "< 1s Response" },
-  { icon: Shield, label: "Secure", value: "End-to-end" },
+  { icon: Shield, label: "Trusted Resources", value: "100% Verified" },
+  { icon: Zap, label: "Customer Rated", value: "4.9/5 Stars" },
   { icon: Globe, label: "Always Available", value: "24/7 Online" },
 ];
 
@@ -259,16 +259,6 @@ export default function LandingPage() {
           </motion.div>
         </motion.div>
 
-        {/* Scroll indicator */}
-        <motion.div
-          className="absolute bottom-10 left-1/2 -translate-x-1/2"
-          animate={{ y: [0, 10, 0], opacity: [0.5, 1, 0.5] }}
-          transition={{ duration: 2, repeat: Infinity }}
-        >
-          <div className="w-6 h-10 rounded-full border-2 border-muted-foreground/30 flex justify-center pt-2">
-            <div className="w-1 h-2 rounded-full bg-primary" />
-          </div>
-        </motion.div>
       </section>
 
       {/* Stats */}
@@ -331,34 +321,30 @@ export default function LandingPage() {
           </motion.div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {features.map((f, i) => (
-              <motion.div
-                key={f.title}
-                initial={{ opacity: 0, y: 30, rotateX: 10 }}
-                whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
-                transition={{ delay: i * 0.15, duration: 0.6 }}
-                viewport={{ once: true }}
-                whileHover={{ y: -5, scale: 1.02 }}
-                className="glass-panel rounded-2xl p-8 hover-glow transition-all duration-500 group relative overflow-hidden"
-              >
-                {/* Gradient accent */}
-                <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${f.color} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
-
+              <Link to="/login" key={f.title}>
                 <motion.div
-                  className={`h-16 w-16 rounded-2xl bg-gradient-to-br ${f.color} flex items-center justify-center mb-6 shadow-lg`}
-                  whileHover={{ rotate: 5, scale: 1.1 }}
-                  transition={{ type: "spring", stiffness: 300 }}
+                  initial={{ opacity: 0, y: 30, rotateX: 10 }}
+                  whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
+                  transition={{ delay: i * 0.15, duration: 0.6 }}
+                  viewport={{ once: true }}
+                  whileHover={{ y: -5, scale: 1.02 }}
+                  className="glass-panel rounded-2xl p-8 hover-glow transition-all duration-500 group relative overflow-hidden cursor-pointer"
                 >
-                  <f.icon className="h-8 w-8 text-foreground" />
+                  <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${f.color} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
+                  <motion.div
+                    className={`h-16 w-16 rounded-2xl bg-gradient-to-br ${f.color} flex items-center justify-center mb-6 shadow-lg`}
+                    whileHover={{ rotate: 5, scale: 1.1 }}
+                    transition={{ type: "spring", stiffness: 300 }}
+                  >
+                    <f.icon className="h-8 w-8 text-foreground" />
+                  </motion.div>
+                  <h3 className="font-heading text-2xl font-semibold text-foreground mb-3">{f.title}</h3>
+                  <p className="text-muted-foreground leading-relaxed">{f.desc}</p>
+                  <motion.div className="mt-6 flex items-center gap-2 text-primary text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    Get Started <ArrowRight className="h-4 w-4" />
+                  </motion.div>
                 </motion.div>
-                <h3 className="font-heading text-2xl font-semibold text-foreground mb-3">{f.title}</h3>
-                <p className="text-muted-foreground leading-relaxed">{f.desc}</p>
-
-                <motion.div
-                  className="mt-6 flex items-center gap-2 text-primary text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                >
-                  Learn more <ArrowRight className="h-4 w-4" />
-                </motion.div>
-              </motion.div>
+              </Link>
             ))}
           </div>
         </div>
