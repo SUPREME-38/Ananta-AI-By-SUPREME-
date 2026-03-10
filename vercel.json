@@ -1,6 +1,6 @@
 {
   "rewrites": [
-    // Supabase auth redirect page
+    
     { "source": "/login/callback", "destination": "/login/callback" },
     
     
