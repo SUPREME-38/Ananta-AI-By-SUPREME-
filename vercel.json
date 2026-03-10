@@ -3,13 +3,13 @@
     // Supabase auth redirect page
     { "source": "/login/callback", "destination": "/login/callback" },
     
-    // Dashboard route
+    
     { "source": "/dashboard", "destination": "/dashboard" },
     
-    // Profile route (example, optional if you have profile pages)
+    
     { "source": "/profile/:path*", "destination": "/profile/:path*" },
     
-    // All other routes go to SPA root so your frontend router works
+    
     { "source": "/(.*)", "destination": "/" }
   ]
 }
