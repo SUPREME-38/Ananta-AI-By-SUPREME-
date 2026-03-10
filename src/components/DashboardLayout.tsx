@@ -1,11 +1,10 @@
 import { Outlet, Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/lib/auth-context";
-import { Button } from "@/components/ui/button";
 import {
   LayoutDashboard, MessageSquare, ShoppingCart,
   GraduationCap, Gamepad2, User, Settings, LogOut, Search, Bell, Menu, X, Loader2
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import anantaLogo from "@/assets/ananta-logo-new.png";
@@ -26,6 +25,13 @@ export default function DashboardLayout() {
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
+  // Safe redirect to login after auth state loads
+  useEffect(() => {
+    if (!loading && !user) {
+      navigate("/login");
+    }
+  }, [loading, user, navigate]);
+
   if (loading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -35,7 +41,7 @@ export default function DashboardLayout() {
   }
 
   if (!user) {
-    navigate("/login");
+    // While redirecting, render nothing to prevent flicker
     return null;
   }
 
@@ -43,6 +49,7 @@ export default function DashboardLayout() {
 
   return (
     <div className="min-h-screen bg-background flex">
+      {/* Sidebar */}
       <motion.aside
         initial={false}
         animate={{ width: sidebarOpen ? 256 : 64 }}
@@ -70,6 +77,7 @@ export default function DashboardLayout() {
             )}
           </AnimatePresence>
         </div>
+
         <nav className="flex-1 py-4 space-y-1 px-2 overflow-y-auto">
           {navItems.map((item, i) => {
             const active = location.pathname === item.to;
@@ -114,6 +122,7 @@ export default function DashboardLayout() {
             );
           })}
         </nav>
+
         <div className="p-3 border-t border-border">
           <button
             onClick={async () => { await logout(); navigate("/"); }}
@@ -131,11 +140,13 @@ export default function DashboardLayout() {
         </div>
       </motion.aside>
 
+      {/* Main Content */}
       <motion.div
         className="flex-1"
         animate={{ marginLeft: sidebarOpen ? 256 : 64 }}
         transition={{ duration: 0.3, ease: "easeInOut" }}
       >
+        {/* Header */}
         <header className="sticky top-0 z-30 h-16 glass-panel border-b flex items-center justify-between px-6">
           <div className="flex items-center gap-4">
             <motion.button
@@ -154,6 +165,7 @@ export default function DashboardLayout() {
               />
             </div>
           </div>
+
           <div className="flex items-center gap-4">
             <motion.button
               className="text-muted-foreground hover:text-foreground transition-colors relative"
@@ -179,6 +191,7 @@ export default function DashboardLayout() {
           </div>
         </header>
 
+        {/* Page Content */}
         <main className="p-6">
           <Outlet />
         </main>
